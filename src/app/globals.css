@@ -1,0 +1,123 @@
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+@source "../";
+
+/* Layout: één kolom, mobile first, tabbalk onderin. Kleuren: keukenkruiden en linnen. */
+:root {
+  --bg: #f2f1ea;
+  --surface: #ffffff;
+  --surface-2: #e9e8df;
+  --ink: #1d2620;
+  --muted: #5f6a5f;
+  --line: #dcdbd0;
+  --herb: #2f5a3c;
+  --herb-ink: #ffffff;
+  --herb-soft: #dfe9dc;
+  --saffron: #e09a1b;
+  --saffron-soft: #f8ead0;
+  --chili: #c2412b;
+  --chili-soft: #f6dfd9;
+  --shadow: 0 1px 2px rgb(29 38 32 / 0.06), 0 8px 24px -12px rgb(29 38 32 / 0.18);
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141915;
+    --surface: #1c231e;
+    --surface-2: #252e27;
+    --ink: #ecefe8;
+    --muted: #a0aa9f;
+    --line: #313b33;
+    --herb: #8fc49c;
+    --herb-ink: #10180f;
+    --herb-soft: #24382a;
+    --saffron: #f0b44a;
+    --saffron-soft: #3a2f19;
+    --chili: #ef7f69;
+    --chili-soft: #3d231e;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -12px rgb(0 0 0 / 0.6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141915;
+  --surface: #1c231e;
+  --surface-2: #252e27;
+  --ink: #ecefe8;
+  --muted: #a0aa9f;
+  --line: #313b33;
+  --herb: #8fc49c;
+  --herb-ink: #10180f;
+  --herb-soft: #24382a;
+  --saffron: #f0b44a;
+  --saffron-soft: #3a2f19;
+  --chili: #ef7f69;
+  --chili-soft: #3d231e;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -12px rgb(0 0 0 / 0.6);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-herb: var(--herb);
+  --color-herb-ink: var(--herb-ink);
+  --color-herb-soft: var(--herb-soft);
+  --color-saffron: var(--saffron);
+  --color-saffron-soft: var(--saffron-soft);
+  --color-chili: var(--chili);
+  --color-chili-soft: var(--chili-soft);
+  --font-display: var(--font-display);
+  --font-sans: var(--font-body);
+  --shadow-card: var(--shadow);
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--ink);
+}
+body {
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  text-wrap: balance;
+  letter-spacing: -0.02em;
+}
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+:focus-visible {
+  outline: 2px solid var(--herb);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+@keyframes rise {
+  from {
+    transform: translateY(8px);
+    opacity: 0.4;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.rise {
+  animation: rise 0.45s ease-out both;
+}
