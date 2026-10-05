@@ -371,3 +371,32 @@ export function draftToRecipe(draft: ImportDraft, c: ImportChoices): Recipe {
     imported: true,
   };
 }
+
+/** Snel opslaan zonder controleformulier: alles wordt uit het concept afgeleid */
+export function quickRecipeFromDraft(draft: ImportDraft, existingId?: string): Recipe {
+  return draftToRecipe(draft, {
+    id: existingId,
+    title: draft.title,
+    description: draft.description,
+    cuisine: guessCuisine(draft),
+    protein: guessProtein(draft.ingredients.map(parseIngredientLine)),
+    prepTime: draft.totalMinutes ?? 30,
+    servings: draft.servings ?? 4,
+    ingredients: draft.ingredients,
+    steps: draft.steps,
+    kcal: draft.kcal,
+    carbs: draft.carbs,
+  });
+}
+
+/** Concept dat klaarstaat om in het importformulier te openen (bijvoorbeeld via "Aanpassen") */
+let pendingDraft: ImportDraft | null = null;
+export function setPendingDraft(d: ImportDraft | null): void {
+  pendingDraft = d;
+}
+export function takePendingDraft(): ImportDraft | null {
+  const d = pendingDraft;
+  // Pas na deze render leegmaken, zodat een dubbele aanroep in de ontwikkelmodus hetzelfde concept krijgt
+  if (d) setTimeout(() => (pendingDraft = pendingDraft === d ? null : pendingDraft), 0);
+  return d;
+}

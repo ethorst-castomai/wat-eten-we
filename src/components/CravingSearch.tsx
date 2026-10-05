@@ -5,7 +5,7 @@ import { allRecipes } from "@/data/recipes";
 import { findCravings } from "@/lib/craving";
 import { useApp } from "./AppState";
 import { RecipeRow } from "./RecipeRow";
-import { SourceLinks } from "./SourceLinks";
+import { SourceSearch } from "./SourceSearch";
 import { Button } from "./ui";
 
 const SUGGESTIONS = ["Pasta", "Iets met zalm", "Curry", "Snel en licht", "Salade", "Iets Aziatisch met kip", "Stoofpot"];
@@ -102,7 +102,7 @@ export function CravingSearch() {
           })}
         </div>
       )}
-      {q.length >= 2 && <SourceLinks query={q} />}
+      {q.length >= 2 && <SourceSearch query={q} />}
     </section>
   );
 }

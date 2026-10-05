@@ -81,6 +81,14 @@ preview/                   Losse preview-build (Vite, zelfde schermen, router in
 - Calorieën en koolhydraten komen van de bronsite als die ze geeft, anders van de calorietabel als genoeg ingrediënten bekend zijn. Anders staat er "Onbekend".
 - In de losse preview werkt ophalen via internet niet, omdat er geen server is. Tekst plakken werkt daar wel.
 
+## Zoeken op je receptbronnen binnen de app
+
+- Typ je bij "Ik heb zin in" minstens drie letters, dan zoekt de app ook op je receptbronnen uit het profiel.
+- `POST /api/source-search` leest per bron de sitemaps (via robots.txt, sitemap.xml of sitemap_index.xml, ook .gz) en zoekt in de recept-URL's naar je zoekwoorden. Per site staan de URL's 12 uur in het geheugen, dus de eerste zoekopdracht duurt langer.
+- Met Bekijken haalt de app het recept op via `/api/import` en toont het in de app. Kies voor vanavond of Bewaar en open zet het direct tussen je eigen recepten. Met Eerst aanpassen open je het controleformulier.
+- Een site zonder sitemap met recepten wordt overgeslagen. Daar werkt Recept importeren met de link nog wel.
+- In de losse preview werkt dit niet, omdat er geen server is.
+
 ## Calorieën
 
 - `src/data/nutrition.ts` bevat kcal per eenheid voor alle 209 ingrediënten, op basis van NEVO (RIVM) en USDA.

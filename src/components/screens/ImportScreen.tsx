@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { cuisineLabel, CUISINE_LABEL, PROTEIN_LABEL } from "@/lib/labels";
 import { formatQuantity } from "@/lib/ingredients";
-import { draftToRecipe, guessCuisine, guessProtein, parseIngredientLine, parseRecipeFromText, type ImportDraft } from "@/lib/import/parse";
+import { draftToRecipe, guessCuisine, guessProtein, parseIngredientLine, parseRecipeFromText, takePendingDraft, type ImportDraft } from "@/lib/import/parse";
 import { fetchRecipeDraft, ImportError } from "@/lib/import/client";
 import { violatesAvoidList } from "@/lib/selection";
 import { AppLink, useGoBack, useNavigate } from "@/lib/nav";
@@ -37,7 +37,7 @@ export function ImportScreen({ editId }: { editId?: string }) {
   const app = useApp();
   const goBack = useGoBack();
   const existing = editId ? app.data.importedRecipes.find((r) => r.id === editId) : undefined;
-  const [draft, setDraft] = useState<ImportDraft | null>(existing ? recipeToDraft(existing) : null);
+  const [draft, setDraft] = useState<ImportDraft | null>(() => (existing ? recipeToDraft(existing) : takePendingDraft()));
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-6">
