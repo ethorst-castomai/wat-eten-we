@@ -8,7 +8,7 @@ import { AppLink, useGoBack, useNavigate } from "@/lib/nav";
 import type { FeedbackValue, Recipe } from "@/lib/types";
 import { useApp } from "../AppState";
 import { DishArt } from "../DishArt";
-import { SourceLinks } from "../SourceLinks";
+import { SourceSearch } from "../SourceSearch";
 import { IconBack, IconBasket, IconCheck, IconClock, IconFlame, IconHeart, IconLeaf, IconSwap } from "../Icons";
 import { Button, DietChip, DinersPicker, EmptyState, Panel, ProteinChip } from "../ui";
 
@@ -305,9 +305,11 @@ export function RecipeScreen({ id }: { id: string }) {
         {feedback && <p className="mt-3 text-[13px] text-muted">{FEEDBACK_HELP[feedback]}</p>}
       </Panel>
 
-      <section className="px-1">
-        <SourceLinks query={recipe.name.replace(/\s*\(.*?\)\s*/g, " ").trim()} title="Vergelijkbare recepten op je bronnen" />
-      </section>
+      {!recipe.imported && (
+        <section className="flex flex-col gap-2 px-1">
+          <SourceSearch query={recipe.name.replace(/\s*\(.*?\)\s*/g, " ").trim()} auto={false} label="Vergelijkbare recepten van je bronnen" />
+        </section>
+      )}
     </article>
   );
 }

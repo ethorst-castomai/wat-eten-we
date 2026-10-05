@@ -50,6 +50,7 @@ interface AppState {
   /** Geïmporteerd recept opslaan (nieuw of bijwerken) */
   saveImportedRecipe(recipe: Recipe): void;
   removeImportedRecipe(id: string): void;
+  setDiscovered(d: AppData["discovered"]): void;
   resetAll(): void;
 }
 
@@ -215,6 +216,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
         setImportedRecipes(next);
         return { ...d, importedRecipes: next };
       }),
+    setDiscovered: (disc) => update((d) => ({ ...d, discovered: disc })),
     removeImportedRecipe: (id) =>
       update((d) => {
         const next = d.importedRecipes.filter((r) => r.id !== id);

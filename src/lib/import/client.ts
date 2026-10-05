@@ -51,3 +51,18 @@ export async function searchSources(query: string, sources: { name: string; url:
   const body = (await res.json()) as { results?: SourceSearchResult[] };
   return body.results ?? [];
 }
+
+/** Laat de server zelf recepten ontdekken bij de bronnen, volledig uitgelezen */
+export async function discoverRecipes(params: { sources: { name: string; url: string }[]; queries: string[]; exclude: string[]; limit?: number }): Promise<ImportDraft[]> {
+  let res: Response;
+  try {
+    res = await fetch("/api/discover", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(params) });
+  } catch {
+    throw new ImportError("Recepten ontdekken werkt in deze versie van de app niet.", true);
+  }
+  if (!(res.headers.get("content-type") ?? "").includes("application/json")) {
+    throw new ImportError("Recepten ontdekken werkt in deze versie van de app niet.", true);
+  }
+  const body = (await res.json()) as { drafts?: ImportDraft[] };
+  return body.drafts ?? [];
+}

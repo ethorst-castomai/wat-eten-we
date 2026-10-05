@@ -81,6 +81,14 @@ preview/                   Losse preview-build (Vite, zelfde schermen, router in
 - Calorieën en koolhydraten komen van de bronsite als die ze geeft, anders van de calorietabel als genoeg ingrediënten bekend zijn. Anders staat er "Onbekend".
 - In de losse preview werkt ophalen via internet niet, omdat er geen server is. Tekst plakken werkt daar wel.
 
+## Automatisch ontdekken: Nieuw van je bronnen
+
+- Op het scherm Vandaag haalt de app één keer per dag zelf recepten op bij je receptbronnen. Titel, ingrediënten, bereiding, tijd, foto en calorieën komen van de bronsite.
+- `POST /api/discover` maakt zoekwoorden uit je profiel (eiwit, keukens, favoriete ingrediënten, eigen opties), zoekt in de sitemaps van je bronnen, haalt de beste kandidaten op en geeft ze uitgelezen terug.
+- De app toont alleen recepten die bij je profiel passen: niets van de vermijdlijst, het eiwit staat aan en de kooktijd past bij de dag.
+- Met Kies voor vanavond of Bewaar en open komt het recept tussen je eigen recepten. Met Andere recepten haal je een nieuwe set op.
+- Onder ieder recept en in het importscherm zoek je ook binnen de app op je bronnen, zonder naar de site te gaan.
+
 ## Zoeken op je receptbronnen binnen de app
 
 - Typ je bij "Ik heb zin in" minstens drie letters, dan zoekt de app ook op je receptbronnen uit het profiel.

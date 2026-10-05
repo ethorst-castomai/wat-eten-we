@@ -220,4 +220,6 @@ export interface AppData {
   shopping: ShoppingState;
   /** Zelf geïmporteerde recepten */
   importedRecipes: Recipe[];
+  /** Recepten die de app vandaag zelf op je bronnen heeft ontdekt */
+  discovered?: { date: string; drafts: import("./import/parse").ImportDraft[] };
 }

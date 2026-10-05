@@ -3,6 +3,7 @@
 import { useApp } from "../AppState";
 import { RecipeCard } from "../RecipeCard";
 import { CravingSearch } from "../CravingSearch";
+import { DiscoverSection } from "../DiscoverSection";
 import { Button, DinersPicker } from "../ui";
 import { IconRefresh } from "../Icons";
 import { selectionRecipes } from "@/lib/daily";
@@ -91,6 +92,7 @@ export function TodayScreen() {
             : "Suggesties van de afgelopen zeven dagen komen niet terug. Gerechten met “Niet meer” zie je nooit meer."}
         </p>
       </div>
+      <DiscoverSection />
     </div>
   );
 }

@@ -11,6 +11,7 @@ import type { Protein, Recipe } from "@/lib/types";
 import { useApp } from "../AppState";
 import { IconBack } from "../Icons";
 import { Button, Panel } from "../ui";
+import { SourceSearch } from "../SourceSearch";
 
 const field = "min-h-11 w-full rounded-2xl border border-line bg-bg px-4 text-[15px] outline-none focus:border-herb";
 const label = "text-[13px] font-semibold uppercase tracking-[0.06em] text-muted";
@@ -134,16 +135,7 @@ function SourceStep({ onDraft }: { onDraft(d: ImportDraft): void }) {
             bereiding, en plak die hieronder. De link blijft bewaard als bron.
           </p>
         )}
-        {sources.length > 0 && (
-          <div className="mt-3 flex flex-wrap items-center gap-1.5 text-[13px] text-muted">
-            <span>Je bronnen:</span>
-            {sources.map((s) => (
-              <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" className="rounded-full border border-line bg-surface px-2.5 py-1 font-semibold text-ink hover:border-herb">
-                {s.name} ↗
-              </a>
-            ))}
-          </div>
-        )}
+        {sources.length > 0 && <InAppSourceSearch />}
       </Panel>
 
       <Panel>
@@ -389,5 +381,19 @@ function ReviewForm({ draft, existing, onReset }: { draft: ImportDraft; existing
       </div>
       {!canSave && <p className="-mt-2 text-[13px] text-muted">Vul een naam, minstens één ingrediënt en minstens één stap in om op te slaan.</p>}
     </form>
+  );
+}
+
+/** Zoeken op je bronnen zonder de app te verlaten */
+function InAppSourceSearch() {
+  const [q, setQ] = useState("");
+  return (
+    <div className="mt-4 flex flex-col gap-2 border-t border-line pt-4">
+      <label htmlFor="import-search" className="text-[14px] font-semibold">
+        Of zoek op je receptbronnen
+      </label>
+      <input id="import-search" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Bijvoorbeeld kip curry" className={field} />
+      <SourceSearch query={q.trim()} />
+    </div>
   );
 }

@@ -14,16 +14,17 @@ import { SourceLinks } from "./SourceLinks";
  * Zoekt binnen de app op de receptbronnen uit het profiel.
  * Een gevonden recept bekijk je direct, en met één tik staat het tussen je recepten of op het menu.
  */
-export function SourceSearch({ query }: { query: string }) {
+export function SourceSearch({ query, auto = true, label }: { query: string; auto?: boolean; label?: string }) {
   const { data } = useApp();
   const sources = (data.profile.recipeSources ?? []).filter((s) => s.enabled);
   const [state, setState] = useState<"idle" | "loading" | "done" | "unavailable" | "error">("idle");
   const [results, setResults] = useState<SourceSearchResult[]>([]);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const sourceKey = sources.map((s) => s.url).join("|");
+  const [started, setStarted] = useState(auto);
 
   useEffect(() => {
-    if (query.length < 3 || sources.length === 0) {
+    if (!started || query.length < 3 || sources.length === 0) {
       setState("idle");
       setResults([]);
       return;
@@ -47,10 +48,16 @@ export function SourceSearch({ query }: { query: string }) {
       if (timer.current) clearTimeout(timer.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query, sourceKey]);
+  }, [query, sourceKey, started]);
 
   if (sources.length === 0) return <SourceLinks query={query} />;
   if (query.length < 3) return null;
+  if (!started)
+    return (
+      <Button variant="secondary" className="self-start" onClick={() => setStarted(true)}>
+        {label ?? "Zoek op je receptbronnen"}
+      </Button>
+    );
 
   const hits = results.flatMap((r) => r.hits.map((h) => ({ ...h, sourceName: r.source.name })));
 
@@ -84,12 +91,12 @@ export function SourceSearch({ query }: { query: string }) {
   );
 }
 
-function SourceHit({ url, title, sourceName }: { url: string; title: string; sourceName: string }) {
+export function SourceHit({ url, title, sourceName, initialDraft }: { url: string; title: string; sourceName: string; initialDraft?: ImportDraft }) {
   const app = useApp();
   const navigate = useNavigate();
   const existing = app.data.importedRecipes.find((r) => r.source?.url === url);
   const [open, setOpen] = useState(false);
-  const [draft, setDraft] = useState<ImportDraft | null>(null);
+  const [draft, setDraft] = useState<ImportDraft | null>(initialDraft ?? null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const chosen = existing && app.today?.chosenId === existing.id;
@@ -119,11 +126,16 @@ function SourceHit({ url, title, sourceName }: { url: string; title: string; sou
   return (
     <li className="overflow-hidden rounded-2xl bg-bg">
       <div className="flex items-center gap-3 p-3">
+        {draft?.image && !open && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={draft.image} alt="" referrerPolicy="no-referrer" className="h-16 w-16 shrink-0 rounded-xl object-cover" onError={(e) => (e.currentTarget.style.display = "none")} />
+        )}
         <div className="min-w-0 flex-1">
           <p className="line-clamp-2 text-[15px] font-semibold leading-snug">{draft?.title ?? title}</p>
-          <p className="text-[12.5px] text-muted">
-            {sourceName}
-            {existing ? ", staat bij je recepten" : ""}
+          <p className="tabular text-[12.5px] text-muted">
+            {[sourceName, draft?.totalMinutes ? `${draft.totalMinutes} min` : "", draft?.kcal ? `± ${Math.round(draft.kcal)} kcal` : "", existing ? "staat bij je recepten" : ""]
+              .filter(Boolean)
+              .join(", ")}
           </p>
         </div>
         <Button variant={open ? "active" : "secondary"} className="min-h-10 shrink-0 px-3 text-[14px]" aria-expanded={open} onClick={load}>
